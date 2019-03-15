@@ -1,104 +1,98 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { DatePicker } from "antd";
-import { Button, Divider, Tag, Spin, Alert, Switch } from "antd";
-import { Table } from "antd";
+import { Articles } from "./articles";
+import { Users } from "./users";
+import { Layout, Menu, Breadcrumb, Icon } from "antd";
+
 import { Welcome } from "./welcome";
 import "./styles.css";
 import "antd/dist/antd.css";
+const { Header, Content, Footer, Sider } = Layout;
+const SubMenu = Menu.SubMenu;
 
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: text => <a href="javascript:;">{text}</a>
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age"
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address"
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    )
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text, record) => (
-      <span>
-        <a href="javascript:;">Invite {record.name}</a>
-        <Divider type="vertical" />
-        <a href="javascript:;">Delete</a>
-      </span>
-    )
+class App extends React.Component {
+  state = {
+    collapsed: true
+  };
+
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    });
+  };
+
+  render() {
+    return (
+      <Layout>
+        <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
+          <div className="logo" />
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            defaultSelectedKeys={["2"]}
+            style={{ lineHeight: "64px" }}
+          >
+            <Menu.Item key="1">Home</Menu.Item>
+            <Menu.Item key="2">Contact us</Menu.Item>
+            <Menu.Item key="3">About us</Menu.Item>
+          </Menu>
+        </Header>
+        <Content style={{ padding: "0 50px", marginTop: 64 }}>
+          <Breadcrumb style={{ margin: "16px 0" }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
+          <Layout>
+            <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+              <div className="logo" />
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+                <Menu.Item key="1">
+                  <Icon type="user" />
+                  <span>nav 1</span>
+                </Menu.Item>
+                <Menu.Item key="2">
+                  <Icon type="video-camera" />
+                  <span>nav 2</span>
+                </Menu.Item>
+                <Menu.Item key="3">
+                  <Icon type="upload" />
+                  <span>nav 3</span>
+                </Menu.Item>
+              </Menu>
+            </Sider>
+            <Layout>
+              <Header
+                style={{
+                  position: "fixed",
+                  zIndex: 1,
+                  width: "100%",
+                  background: "#fff",
+                  padding: 0,
+                  display: "none"
+                }}
+              >
+                <div className="logo" />
+                <Icon
+                  className="trigger"
+                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                  onClick={this.toggle}
+                />
+              </Header>
+              <Content>
+                <Users />
+                {/*<Articles />*/}
+              </Content>
+            </Layout>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          Ant Design ©2018 Created by Ant UED
+        </Footer>
+      </Layout>
+    );
   }
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
-
-function App() {
-  return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <Welcome name="Sangharsh" />
-      <h2>Start editing to see some magic happen!</h2>
-      <DatePicker />
-      <Button>Hello world!</Button>
-      <Spin />
-      <Alert
-        message="Alert message title"
-        description="Further details about the context of this alert."
-        type="info"
-      />
-      <Table dataSource={data} columns={columns} />
-    </div>
-  );
 }
-
 const rootElement = document.getElementById("root");
 ReactDOM.render(<App />, rootElement);
